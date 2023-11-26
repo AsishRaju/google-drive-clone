@@ -18,7 +18,7 @@ function FileHeader({ headerName }: { headerName: string }) {
         )}
         <h2>{headerName}</h2>
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      {/* <div className="flex flex-wrap items-center gap-2">
         <button className="flex items-center space-x-2 rounded-lg border border-textC px-4 py-1 text-sm font-medium">
           <span>Type</span>
           <AiFillCaretDown className="mt-0.5 h-3 w-3" />
@@ -31,7 +31,7 @@ function FileHeader({ headerName }: { headerName: string }) {
           <span>Modified</span>
           <AiFillCaretDown className="mt-0.5 h-3 w-3" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

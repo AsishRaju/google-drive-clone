@@ -35,7 +35,7 @@ function FileDropDown({
     >
       {select !== "trashed" ? (
         <>
-          <div
+          {/* <div
             onClick={() =>
               isFolderComp
                 ? router.push("/drive/folders/" + folderId)
@@ -45,7 +45,7 @@ function FileDropDown({
           >
             <HiOutlineArrowsExpand className="h-5 w-5" />
             <span className="text-sm">Open File</span>
-          </div>
+          </div> */}
           {!isFolderComp && (
             <a
               href={file.fileLink}

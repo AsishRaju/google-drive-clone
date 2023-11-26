@@ -31,7 +31,7 @@ function Header() {
         </Link>
       </div>
       {/* search */}
-      <Search />
+      {/* <Search /> */}
       <div
         onClick={() => {
           session ? setDisplayUserInfo((prev) => !prev) : signIn();
