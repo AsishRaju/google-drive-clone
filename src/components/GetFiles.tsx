@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchFiles } from "@/hooks/fetchFiles";
+import { fetchFiles, fetchFilesShared, fetchFilesSharedWithUser } from "@/hooks/fetchFiles";
 import Image from "next/image";
 import fileIcons from "@/components/fileIcons";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -13,7 +13,7 @@ import * as CryptoJS from 'crypto-js'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer,toast } from 'react-toastify';
 
-function GetFiles({ folderId, select }: { folderId: string; select: string }) {
+function GetFiles({ folderId, select, type }: { folderId: string; select: string, type:string }) {
   const [openMenu, setOpenMenu] = useState("");
   const [renameToggle, setRenameToggle] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -26,6 +26,16 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
 
   let fileList = fetchFiles(folderId, session?.user.email!);
   if (select) fileList = fetchAllFiles(session?.user.email!);
+
+  if (type==="sharedFiles"){
+    fileList = fetchFilesShared(session?.user.email!);
+  } else if (type==="fileSharedWithYou"){
+    fileList = fetchFilesSharedWithUser(session?.user.email!);
+    console.log(fileList)
+  } else{
+    let fileList = fetchFiles(folderId, session?.user.email!);
+  if (select) fileList = fetchAllFiles(session?.user.email!);
+  }
 
   const openFile = (fileLink: string) => {
     setEncryptedLink(fileLink)

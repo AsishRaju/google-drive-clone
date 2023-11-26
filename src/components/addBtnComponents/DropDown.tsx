@@ -35,10 +35,10 @@ function DropDown({
           {/* Upload file button */}
           <UploadFileBtn uploadFile={uploadFile} />
           {/* Folder upload button */}
-          <button className="flex w-full items-center space-x-3 px-4 py-1.5 hover:bg-darkC">
+          {/* <button className="flex w-full items-center space-x-3 px-4 py-1.5 hover:bg-darkC">
             <MdDriveFolderUpload className="h-5 w-5" />
             <span>Folder upload</span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import { DiGoogleDrive } from "react-icons/di";
 import { MdStarBorder } from "react-icons/md";
 import { RiDeleteBin6Fill, RiDeleteBin6Line } from "react-icons/ri";
-import { IoMdStar } from "react-icons/io";
+import { IoMdStar,IoMdShare } from "react-icons/io";
+import { BsShare } from "react-icons/bs";
 
 function Navbar() {
   const router = useRouter();
@@ -39,6 +40,20 @@ function Navbar() {
         )}
 
         <span className="tablet:block hidden">Starred</span>
+      </Link>
+      <Link
+        href={"/drive/shared"}
+        className={`tablet:justify-normal tablet:space-x-3 tablet:px-4 tablet:py-1.5 flex items-center justify-center rounded-full p-2 hover:bg-darkC ${
+          isActive("/drive/shared") ? "bg-[#C2E7FF]" : ""
+        }`}
+      >
+        {isActive("/drive/shared") ? (
+          <IoMdShare className="tablet:h-5 tablet:w-5 h-6 w-6" />
+        ) : (
+          <BsShare className="tablet:h-4 tablet:w-5 h-6 w-6" />
+        )}
+
+        <span className="tablet:block hidden">Shared</span>
       </Link>
       <Link
         href={"/drive/trash"}
