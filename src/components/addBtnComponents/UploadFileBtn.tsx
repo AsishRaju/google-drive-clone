@@ -29,6 +29,7 @@ function UploadFileBtn({ uploadFile }: { uploadFile: Function }) {
   },[password,confirmPassword])
 
   const upload = (e:any)=>{
+    console.log(password)
     uploadFile(e,password)
   }
 
@@ -75,7 +76,7 @@ function UploadFileBtn({ uploadFile }: { uploadFile: Function }) {
                 <input
                   type="file"
                   multiple
-                  onChange={(e) => uploadFile(e)}
+                  onChange={upload}
                   className="absolute -left-3 top-0 h-full w-full cursor-pointer bg-slate-300 opacity-0"
                 />
                 Upload File

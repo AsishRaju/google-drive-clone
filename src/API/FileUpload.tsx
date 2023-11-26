@@ -1,6 +1,7 @@
 import { storage } from "@/firebaseConfig";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { addFiles } from "@/API/Firestore";
+import * as CryptoJS from 'crypto-js'
 
 const fileUpload = (
   file: any,
@@ -25,8 +26,9 @@ const fileUpload = (
     },
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        
-        addFiles(downloadURL, file.name, parentId, userEmail);
+        console.log(password,downloadURL)
+        const encryptedURL = CryptoJS.AES.encrypt(downloadURL, password).toString()
+        addFiles(encryptedURL, file.name, parentId, userEmail);
       });
     },
   );

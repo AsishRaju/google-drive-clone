@@ -7,10 +7,18 @@ import { useSession } from "next-auth/react";
 import FileDropDown from "./FileDropDown";
 import { fetchAllFiles } from "@/hooks/fetchAllFiles";
 import Rename from "./Rename";
+import { Button, Label, Modal, TextInput } from "flowbite-react";
+import Iframe from 'react-iframe'
+import * as CryptoJS from 'crypto-js'
 
 function GetFiles({ folderId, select }: { folderId: string; select: string }) {
   const [openMenu, setOpenMenu] = useState("");
   const [renameToggle, setRenameToggle] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [password, setPassword] = useState("")
+  const [validLink, setValidLink] = useState("")
+  const [encryptedLink, setEncryptedLink] = useState("")
+
 
   const { data: session } = useSession();
 
@@ -18,7 +26,9 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
   if (select) fileList = fetchAllFiles(session?.user.email!);
 
   const openFile = (fileLink: string) => {
-    window.open(fileLink, "_blank");
+    setEncryptedLink(fileLink)
+    // window.open(fileLink, "_blank");
+    setOpenModal(true)
   };
 
   const handleMenuToggle = (fileId: string) => {
@@ -26,6 +36,12 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
     setRenameToggle("");
     setOpenMenu((prevOpenMenu) => (prevOpenMenu === fileId ? "" : fileId));
   };
+
+  const decrypt = () => {
+    const bytes = CryptoJS.AES.decrypt(encryptedLink, password)
+    const plainText = bytes.toString(CryptoJS.enc.Utf8)
+    setValidLink(plainText)
+  }
 
   const list = fileList.map((file) => {
     // getting the icon for the file
@@ -36,14 +52,7 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
     const img = ["jpg", "ico", "webp", "png", "jpeg", "gif", "jfif"].includes(
       file.fileExtension,
     ) ? (
-      <Image
-        src={file.fileLink}
-        alt={file.fileName}
-        height="500"
-        width="500"
-        draggable={false}
-        className="h-full w-full rounded-sm object-cover object-center"
-      />
+      icon
     ) : file.fileExtension === "mp3" ? (
       <div className="flex flex-col items-center justify-center">
         <div className="h-24 w-24 ">{icon}</div>
@@ -126,7 +135,40 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
   });
 
   // the list of files
-  return list;
+  return (<>
+    {list}
+    <Modal show={openModal} onClose={() => setOpenModal(false)} position={'center'} size={validLink?'7xl':'sm'}>
+      <Modal.Body>
+        {!validLink&&<div className="w-64">
+          <Label htmlFor="password" value="Enter Password to view the file" />
+          <TextInput
+            type="password"
+            id="password"
+            placeholder="*******"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+          />
+        </div>}
+        {validLink.length > 0 && <Iframe url={validLink} width="100%" height="100%"
+        display="block"
+        position="relative"
+        styles={{height:'100vh'}}
+        ></Iframe>}
+
+      </Modal.Body>
+      <Modal.Footer className="w-full">
+        {!validLink&&<Button className="w-full" onClick={decrypt} color="success" >View File</Button>}
+        <Button className="w-full" color="gray" onClick={() => {
+            setPassword("")
+            setValidLink("")
+            setOpenModal(false)
+          }}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  </>);
 }
 
 export default GetFiles;
