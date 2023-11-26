@@ -26,13 +26,13 @@ function SideMenu() {
   const userEmail = session?.user.email;
 
   // Add new file
-  const uploadFile = (e: ChangeEvent<HTMLInputElement>) => {
+  const uploadFile = (e: ChangeEvent<HTMLInputElement>,password:string) => {
     const files = e.target.files || [];
     for (let i = 0; i < files.length; i++) {
       const file = files?.[i];
       if (!file) return;
       setFileName((prev) => [...prev, file.name]);
-      fileUpload(file, setProgress, Folder?.[1] || "", userEmail!);
+      fileUpload(file,password, setProgress, Folder?.[1] || "", userEmail!);
     }
   };
   fileName.reverse();
