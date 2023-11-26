@@ -25,6 +25,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         </section>
       </main>
     </SessionProvider>
+    
   );
 };
 

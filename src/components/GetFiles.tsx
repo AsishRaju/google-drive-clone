@@ -10,6 +10,8 @@ import Rename from "./Rename";
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import Iframe from 'react-iframe'
 import * as CryptoJS from 'crypto-js'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer,toast } from 'react-toastify';
 
 function GetFiles({ folderId, select }: { folderId: string; select: string }) {
   const [openMenu, setOpenMenu] = useState("");
@@ -38,9 +40,24 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
   };
 
   const decrypt = () => {
-    const bytes = CryptoJS.AES.decrypt(encryptedLink, password)
-    const plainText = bytes.toString(CryptoJS.enc.Utf8)
-    setValidLink(plainText)
+    try {
+      const bytes = CryptoJS.AES.decrypt(encryptedLink, password)
+      const plainText = bytes.toString(CryptoJS.enc.Utf8)
+      console.log(plainText)
+      setValidLink(plainText)
+    } catch (error) {
+      toast.error('Incorrect Password', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    }
+
   }
 
   const list = fileList.map((file) => {
@@ -137,9 +154,9 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
   // the list of files
   return (<>
     {list}
-    <Modal show={openModal} onClose={() => setOpenModal(false)} position={'center'} size={validLink?'7xl':'sm'}>
+    <Modal show={openModal} onClose={() => setOpenModal(false)} position={'center'} size={validLink ? '7xl' : 'sm'}>
       <Modal.Body>
-        {!validLink&&<div className="w-64">
+        {!validLink && <div className="w-64">
           <Label htmlFor="password" value="Enter Password to view the file" />
           <TextInput
             type="password"
@@ -151,23 +168,24 @@ function GetFiles({ folderId, select }: { folderId: string; select: string }) {
           />
         </div>}
         {validLink.length > 0 && <Iframe url={validLink} width="100%" height="100%"
-        display="block"
-        position="relative"
-        styles={{height:'100vh'}}
+          display="block"
+          position="relative"
+          styles={{ height: '100vh' }}
         ></Iframe>}
 
       </Modal.Body>
       <Modal.Footer className="w-full">
-        {!validLink&&<Button className="w-full" onClick={decrypt} color="success" >View File</Button>}
+        {!validLink && <Button className="w-full" onClick={decrypt} color="success" >View File</Button>}
         <Button className="w-full" color="gray" onClick={() => {
-            setPassword("")
-            setValidLink("")
-            setOpenModal(false)
-          }}>
+          setPassword("")
+          setValidLink("")
+          setOpenModal(false)
+        }}>
           Close
         </Button>
       </Modal.Footer>
     </Modal>
+    <ToastContainer />
   </>);
 }
 
