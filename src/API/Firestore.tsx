@@ -11,6 +11,8 @@ import {
 } from "firebase/firestore";
 
 let files = collection(database, "files");
+let logs = collection(database, "logs");
+
 
 export const addFiles = (
   fileLink: string,
@@ -28,16 +30,18 @@ export const addFiles = (
       folderId: folderId,
       userEmail: userEmail,
     });
+    addLog(userEmail,`Added a file named ${fileName}`)
   } catch (err) {
     console.error(err);
   }
 };
 
-export const addFolder = (payload: payloadProps) => {
+export const addFolder = (payload: any) => {
   try {
     addDoc(files, {
       ...payload,
     });
+    addLog(payload.userEmail,`Added a folder named ${payload.folderName}`)
   } catch (err) {
     console.error(err);
   }
@@ -46,6 +50,8 @@ export const addFolder = (payload: payloadProps) => {
 export const shareFile = async (
   fileId: string,
   email: string,
+  userEmail: string,
+  fileName: string
 ) => {
   const fileRef = doc(files, fileId);
   try {
@@ -53,6 +59,8 @@ export const shareFile = async (
       fileSharedWithUserEmail:email,
       fileShared:true
     });
+    addLog(userEmail,`${fileName} shared to ${email}`)
+
   } catch (error) {
     console.error("Error updating file properties: ", error);
   }
@@ -60,7 +68,9 @@ export const shareFile = async (
 
 export const renameFile = async (
   fileId: string,
+  name: string,
   newName: string,
+  userEmail: string,
   isFolder: boolean,
 ) => {
   const fileRef = doc(files, fileId);
@@ -68,35 +78,45 @@ export const renameFile = async (
     await updateDoc(fileRef, {
       [isFolder ? "folderName" : "fileName"]: newName,
     });
+    addLog(userEmail,`File renamed to ${newName} from ${name}`)
   } catch (error) {
     console.error("Error updating file properties: ", error);
   }
 };
 
-export const starFile = async (fileId: string, isStarred: boolean) => {
+export const starFile = async (fileId: string,fileName:string,userEmail:string, isStarred: boolean) => {
   const fileRef = doc(files, fileId);
   try {
     await updateDoc(fileRef, {
       isStarred: isStarred,
     });
+
+    const text = isStarred ? `Starred ${fileName}` : `Removed Starred for ${fileName}`
+
+    addLog(userEmail,text)
   } catch (error) {
     console.error("Error updating file properties: ", error);
   }
 };
 
-export const trashFile = async (fileId: string, isTrashed: boolean) => {
+export const trashFile = async (fileId: string,fileName:string,userEmail:string, isTrashed: boolean) => {
   const fileRef = doc(files, fileId);
   try {
     await updateDoc(fileRef, {
       isStarred: false,
       isTrashed: isTrashed,
     });
+
+    const text = isTrashed ? `Moved ${fileName} to trash` : `Removed ${fileName} from trash`
+    addLog(userEmail,text)
+
+
   } catch (error) {
     console.error("Error updating file properties: ", error);
   }
 };
 
-export const deleteFile = async (fileId: string, isFolder: boolean) => {
+export const deleteFile = async (fileId: string,fileName:string,userEmail:string, isFolder: boolean) => {
   const fileRef = doc(files, fileId);
   try {
     // Delete the file or folder itself
@@ -114,8 +134,23 @@ export const deleteFile = async (fileId: string, isFolder: boolean) => {
       });
 
       await Promise.all(deletePromises);
+    addLog(userEmail,`${fileName} deleted`)
+
     }
   } catch (error) {
     console.error("Error deleting file or folder: ", error);
   }
 };
+
+export const addLog = (email:string,description:string)=>{
+  try {
+    addDoc(logs,{
+      description,
+      metadata:{},
+      timeStamp: new Date().toISOString(),
+      userEmail: email
+    })
+  } catch (error) {
+    console.error(error);
+  }
+}

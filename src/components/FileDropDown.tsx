@@ -11,6 +11,7 @@ import { TbDownload } from "react-icons/tb";
 import { deleteFile, renameFile, starFile, trashFile } from "@/API/Firestore";
 import { useRouter } from "next/router";
 import { BsShare } from "react-icons/bs";
+import { useSession } from "next-auth/react";
 
 function FileDropDown({
   file,
@@ -27,6 +28,9 @@ function FileDropDown({
     // Open the file in a new tab
     window.open(fileLink, "_blank");
   };
+
+  const { data: session } = useSession();
+
 
   return (
     <section
@@ -74,7 +78,7 @@ function FileDropDown({
             <span className="text-sm">Share</span>
           </div>
           <div
-            onClick={() => starFile(file.id, !file.isStarred)}
+            onClick={() => starFile(file.id,file.fileName,session?.user?.email??"", !file.isStarred)}
             className="my-2 flex items-center space-x-3 px-3 py-1.5 hover:cursor-pointer hover:bg-[#ddd]"
           >
             {!file.isStarred ? (
@@ -85,7 +89,7 @@ function FileDropDown({
             <span className="text-sm">Add to starred</span>
           </div>
           <div
-            onClick={() => trashFile(file.id, true)}
+            onClick={() => trashFile(file.id,file.fileName,session?.user?.email??"", true)}
             className="my-2 flex items-center space-x-3 px-3 py-1.5 hover:cursor-pointer hover:bg-[#ddd]"
           >
             <RiDeleteBin6Line className="h-5 w-5" />
@@ -95,14 +99,14 @@ function FileDropDown({
       ) : (
         <>
           <div
-            onClick={() => trashFile(file.id, false)}
+            onClick={() => trashFile(file.id,file.fileName,session?.user?.email??"",false)}
             className="my-2 flex items-center space-x-3 px-3 py-1.5 hover:cursor-pointer hover:bg-[#ddd]"
           >
             <MdOutlineRestore className="h-5 w-5" />
             <span className="text-sm">Restore</span>
           </div>
           <div
-            onClick={() => deleteFile(file.id, file.isFolder)}
+            onClick={() => deleteFile(file.id,file.fileName,session?.user?.email??"", file.isFolder)}
             className="my-2 flex items-center space-x-3 px-3 py-1.5 hover:cursor-pointer hover:bg-[#ddd]"
           >
             <RiDeleteBin6Line className="h-5 w-5" />

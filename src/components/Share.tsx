@@ -1,4 +1,5 @@
 import { renameFile, shareFile } from "@/API/Firestore";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -11,10 +12,13 @@ function Share({
 }: shareProps) {
   const [email, setEmail] = useState("");
 
+  const { data: session } = useSession();
+
+
   const share = () => {
     if (email === "") return;
 
-    shareFile(fileId, email);
+    shareFile(fileId, email,session?.user.email??" ",fileName);
     setShareToggle("");
     toast.success('File shared')
   };

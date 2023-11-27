@@ -1,4 +1,5 @@
 import { renameFile } from "@/API/Firestore";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 
 // The Rename component displays a pop-up for rename input.
@@ -11,16 +12,19 @@ function Rename({
 }: renameProps) {
   const [newName, setNewName] = useState(fileName);
 
+  const { data: session } = useSession();
+
+
   const rename = () => {
     // Check if the file name is empty
     if (newName === "") return;
 
-    if (isFolder) renameFile(fileId, newName, isFolder);
+    if (isFolder) renameFile(fileId,fileName, newName,session?.user?.email??"", isFolder);
     else {
       const formatName = newName.includes(".")
         ? newName
         : newName + "." + fileExtension;
-      renameFile(fileId, formatName, isFolder);
+      renameFile(fileId,fileName, newName,session?.user?.email??"", isFolder);
     }
     setRenameToggle("");
   };
