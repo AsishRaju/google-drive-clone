@@ -58,6 +58,12 @@ export const fetchAllLogs = () => {
       data.push(doc.data())
     });
 
+    data.sort((a:any,b:any)=>{
+      return -a.timeStamp.localeCompare(b.timeStamp)
+    })
+
+
+
     setHistoryList(data)
 
   };

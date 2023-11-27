@@ -26,7 +26,7 @@ function Header() {
             draggable={false}
           />
           <h1 className="hidden text-2xl tracking-tight text-textC tablet:block">
-            Drive
+            Guardian
           </h1>
         </Link>
       </div>

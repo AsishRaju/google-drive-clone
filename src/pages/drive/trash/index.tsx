@@ -35,7 +35,7 @@ export default function Index() {
     <>
       <Head>
         <title>Bin - Google Drive</title>
-        <meta name="description" content="This is a google drive clone!" />
+        <meta name="description" content="Secured File Sharing Platform" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>

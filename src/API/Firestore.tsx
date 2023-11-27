@@ -149,6 +149,8 @@ export const addLog = (email:string,description:string)=>{
       metadata:{},
       timeStamp: new Date().toISOString(),
       userEmail: email
+    }).then((res)=>{
+      console.log(res)
     })
   } catch (error) {
     console.error(error);

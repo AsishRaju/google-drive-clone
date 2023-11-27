@@ -35,8 +35,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>My Drive - Google Drive</title>
-        <meta name="description" content="This is a google drive clone!" />
+        <title>Guardian</title>
+        <meta name="description" content="Secured File Sharing Platform" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
