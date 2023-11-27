@@ -66,7 +66,7 @@ export default function Home() {
                     <div className="mb-5 flex flex-col space-y-4">
                       <h2>Files</h2>
                       <div className="flex flex-wrap justify-start gap-x-3 gap-y-5 text-textC">
-                        <GetFiles folderId="" select="" />
+                        <GetFiles folderId="" select="" type="default" />
                       </div>
                     </div>
                   )}

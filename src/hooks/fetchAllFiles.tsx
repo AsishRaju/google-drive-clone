@@ -1,8 +1,10 @@
-import { onSnapshot, collection, query, where } from "firebase/firestore";
+import { onSnapshot, collection, query, where, getDocs } from "firebase/firestore";
 import { database } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
 
 let files = collection(database, "files");
+let logs = collection(database, "logs");
+
 
 export const fetchAllFiles = (userEmail: string) => {
   const [fileList, setFileList] = useState<FileListProps[]>([]);
@@ -41,4 +43,28 @@ export const fetchAllFiles = (userEmail: string) => {
   }, [userEmail]);
 
   return fileList;
+};
+
+
+export const fetchAllLogs = () => {
+  const [historyList, setHistoryList] = useState<[]>([]);
+
+  const allFiles = async () => {
+
+    const querySnapshot = await getDocs(logs);
+    const data:any=[]
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      data.push(doc.data())
+    });
+
+    setHistoryList(data)
+
+  };
+
+  useEffect(() => {
+    allFiles();
+  }, []);
+
+  return historyList;
 };

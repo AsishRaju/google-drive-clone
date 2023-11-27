@@ -12,10 +12,12 @@ import Iframe from 'react-iframe'
 import * as CryptoJS from 'crypto-js'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer,toast } from 'react-toastify';
+import Share from "./Share";
 
 function GetFiles({ folderId, select, type }: { folderId: string; select: string, type:string }) {
   const [openMenu, setOpenMenu] = useState("");
   const [renameToggle, setRenameToggle] = useState("");
+  const [shareToggle, setShareToggle] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [password, setPassword] = useState("")
   const [validLink, setValidLink] = useState("")
@@ -136,6 +138,7 @@ function GetFiles({ folderId, select, type }: { folderId: string; select: string
                     select={select}
                     folderId=""
                     setRenameToggle={setRenameToggle}
+                    setShareToggle={setShareToggle}
                   />
                 )
               }
@@ -148,6 +151,17 @@ function GetFiles({ folderId, select, type }: { folderId: string; select: string
                     isFolder={file.isFolder}
                     fileName={file.fileName}
                     fileExtension={file.fileExtension}
+                  />
+                )
+              }
+               {
+                // rename toggle
+                shareToggle === file.id && (
+                  <Share
+                    setShareToggle={setShareToggle}
+                    fileId={file.id}
+                    isFolder={file.isFolder}
+                    fileName={file.fileName}
                   />
                 )
               }

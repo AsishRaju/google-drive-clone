@@ -75,6 +75,7 @@ interface FileDropDownProps {
   select: string;
   setOpenMenu: React.Dispatch<React.SetStateAction<string>>;
   setRenameToggle: React.Dispatch<React.SetStateAction<string>>;
+  setShareToggle: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface renameProps {
@@ -83,4 +84,12 @@ interface renameProps {
   fileId: string;
   isFolder: boolean;
   setRenameToggle: React.Dispatch<React.SetStateAction<string>>;
+}
+
+
+interface shareProps {
+  setShareToggle:  React.Dispatch<React.SetStateAction<string>>;
+  fileName: string;
+  fileId: string;
+  isFolder: boolean;
 }

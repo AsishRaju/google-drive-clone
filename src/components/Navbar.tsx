@@ -6,9 +6,15 @@ import { MdStarBorder } from "react-icons/md";
 import { RiDeleteBin6Fill, RiDeleteBin6Line } from "react-icons/ri";
 import { IoMdStar,IoMdShare } from "react-icons/io";
 import { BsShare } from "react-icons/bs";
+import { useSession } from "next-auth/react";
+import { FaRegFileAlt } from "react-icons/fa";
+import { FaRegFile } from "react-icons/fa";
 
 function Navbar() {
   const router = useRouter();
+
+  const { data: session } = useSession();
+
 
   // Function to check if a link is active based on the current route.
   const isActive = (href: string) => router.pathname === href;
@@ -54,6 +60,20 @@ function Navbar() {
         )}
 
         <span className="tablet:block hidden">Shared</span>
+      </Link>
+      <Link
+        href={"/drive/logs"}
+        className={`tablet:justify-normal tablet:space-x-3 tablet:px-4 tablet:py-1.5 flex items-center justify-center rounded-full p-2 hover:bg-darkC ${
+          isActive("/drive/logs") ? "bg-[#C2E7FF]" : ""
+        }`}
+      >
+        {isActive("/drive/logs") && session?.user.email==='asishraju.vachavaya@sjsu.edu' ? (
+          <FaRegFile className="tablet:h-5 tablet:w-5 h-6 w-6" />
+        ) : (
+          <FaRegFileAlt className="tablet:h-4 tablet:w-5 h-6 w-6" />
+        )}
+
+        <span className="tablet:block hidden">Logs</span>
       </Link>
       <Link
         href={"/drive/trash"}

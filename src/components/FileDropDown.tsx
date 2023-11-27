@@ -10,6 +10,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { TbDownload } from "react-icons/tb";
 import { deleteFile, renameFile, starFile, trashFile } from "@/API/Firestore";
 import { useRouter } from "next/router";
+import { BsShare } from "react-icons/bs";
 
 function FileDropDown({
   file,
@@ -18,6 +19,7 @@ function FileDropDown({
   isFolderComp,
   folderId,
   setRenameToggle,
+  setShareToggle,
 }: FileDropDownProps) {
   const router = useRouter();
 
@@ -63,6 +65,13 @@ function FileDropDown({
           >
             <MdDriveFileRenameOutline className="h-5 w-5" />
             <span className="text-sm">Rename</span>
+          </div>
+          <div
+            onClick={() => setShareToggle(file.id)}
+            className="my-2 flex items-center space-x-3 px-3 py-1.5 hover:cursor-pointer hover:bg-[#ddd]"
+          >
+            <BsShare className="h-5 w-5" />
+            <span className="text-sm">Share</span>
           </div>
           <div
             onClick={() => starFile(file.id, !file.isStarred)}

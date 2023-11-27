@@ -43,6 +43,21 @@ export const addFolder = (payload: payloadProps) => {
   }
 };
 
+export const shareFile = async (
+  fileId: string,
+  email: string,
+) => {
+  const fileRef = doc(files, fileId);
+  try {
+    await updateDoc(fileRef, {
+      fileSharedWithUserEmail:email,
+      fileShared:true
+    });
+  } catch (error) {
+    console.error("Error updating file properties: ", error);
+  }
+};
+
 export const renameFile = async (
   fileId: string,
   newName: string,
