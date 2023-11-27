@@ -71,7 +71,7 @@ function FileDropDown({
             <span className="text-sm">Rename</span>
           </div>
           <div
-            onClick={() => setShareToggle(file.id)}
+            onClick={() => setShareToggle && setShareToggle(file.id)}
             className="my-2 flex items-center space-x-3 px-3 py-1.5 hover:cursor-pointer hover:bg-[#ddd]"
           >
             <BsShare className="h-5 w-5" />

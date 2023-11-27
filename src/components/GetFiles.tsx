@@ -155,7 +155,7 @@ function GetFiles({ folderId, select, type }: { folderId: string; select: string
                 )
               }
                {
-                // rename toggle
+                // share toggle
                 shareToggle === file.id && (
                   <Share
                     setShareToggle={setShareToggle}
